@@ -1,15 +1,131 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashlight Controller</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#111;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    text-align:center;
+    width:90%;
+    max-width:500px;
+}
+
+h1{
+    margin-bottom:30px;
+}
+
+button{
+    width:100%;
+    padding:20px;
+    margin:10px 0;
+    border:none;
+    border-radius:15px;
+    font-size:22px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+button:hover{
+    transform:scale(1.03);
+}
+
+.on{
+    background:#00c853;
+    color:white;
+}
+
+.off{
+    background:#ff5252;
+    color:white;
+}
+
+.card{
+    background:#222;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 0 20px rgba(255,255,255,0.1);
+}
+
+.loader{
+    width:50px;
+    height:50px;
+    border:5px solid #444;
+    border-top:5px solid white;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:20px auto;
+}
+
+@keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+</style>
+</head>
+
 <body>
 
-<button onclick="turnOnFlashlight()">Turn On Flashlight</button>
+<div class="container">
+
+    <div id="mainPage" class="card">
+        <h1>🔦 Flashlight Controller</h1>
+
+        <button class="on" onclick="turnOnFlashlight()">
+            Turn On Flashlight
+        </button>
+
+        <button class="off" onclick="showPrizePage()">
+            Pay $120 To TurnOff The Flashlight 
+        </button>
+    </div>
+
+    <div id="prankPage" class="card" style="display:none;">
+        <h1>🎉 Proceeding to bankrupt your account for using our service</h1>
+        <p>(I'm Not Joking 😆)</p>
+
+        <div class="loader"></div>
+
+        <p>Loading...</p>
+    </div>
+
+</div>
 
 <script>
-function turnOnFlashlight() {
-    let msg = new SpeechSynthesisUtterance(
-        "OK Google, turn on the flashlight"
-    );
+function speak(text){
+    let msg = new SpeechSynthesisUtterance(text);
     speechSynthesis.speak(msg);
+}
+
+function turnOnFlashlight(){
+    speak("OK Google turn on the flashlight");
+}
+
+function showPrizePage(){
+
+    document.getElementById("mainPage").style.display="none";
+    document.getElementById("prankPage").style.display="block";
+
+    setTimeout(()=>{
+        speak("OK Google turn off the flashlight");
+    },3000);
 }
 </script>
 
