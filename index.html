@@ -10,11 +10,11 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial,sans-serif;
+    font-family:Arial, sans-serif;
 }
 
 body{
-    background:#111;
+    background:#121212;
     color:white;
     display:flex;
     justify-content:center;
@@ -23,24 +23,41 @@ body{
 }
 
 .container{
-    text-align:center;
     width:90%;
     max-width:500px;
 }
 
+.card{
+    background:#1e1e1e;
+    border-radius:20px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 0 25px rgba(255,255,255,0.08);
+}
+
+.logo{
+    font-size:70px;
+    margin-bottom:15px;
+}
+
 h1{
+    margin-bottom:10px;
+}
+
+.subtitle{
+    color:#aaa;
     margin-bottom:30px;
 }
 
 button{
     width:100%;
     padding:20px;
-    margin:10px 0;
     border:none;
     border-radius:15px;
     font-size:22px;
     cursor:pointer;
     transition:0.2s;
+    margin-top:10px;
 }
 
 button:hover{
@@ -57,53 +74,69 @@ button:hover{
     color:white;
 }
 
-.card{
-    background:#222;
-    padding:30px;
-    border-radius:20px;
-    box-shadow:0 0 20px rgba(255,255,255,0.1);
-}
-
 .loader{
-    width:50px;
-    height:50px;
-    border:5px solid #444;
-    border-top:5px solid white;
+    width:60px;
+    height:60px;
+    border:6px solid #444;
+    border-top:6px solid white;
     border-radius:50%;
+    margin:25px auto;
     animation:spin 1s linear infinite;
-    margin:20px auto;
 }
 
 @keyframes spin{
-    from{transform:rotate(0deg);}
-    to{transform:rotate(360deg);}
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
 }
 </style>
 </head>
-
 <body>
 
 <div class="container">
 
+    <!-- Main Page -->
     <div id="mainPage" class="card">
-        <h1>🔦 Flashlight Controller</h1>
 
-        <button class="on" onclick="turnOnFlashlight()">
+        <div class="logo">🔦</div>
+
+        <h1>Flashlight Controller</h1>
+
+        <p class="subtitle">
+            Quick flashlight control utility
+        </p>
+
+        <button id="onBtn"
+                class="on"
+                onclick="turnOnFlashlight()">
             Turn On Flashlight
         </button>
 
-        <button class="off" onclick="showPrizePage()">
-            Pay $120 To TurnOff The Flashlight 
+        <button id="offBtn"
+                class="off"
+                onclick="showPrizePage()"
+                style="display:none;">
+            Pay $120 To TurnOff The Flashlight
         </button>
+
     </div>
 
-    <div id="prankPage" class="card" style="display:none;">
+    <!-- Prank Page -->
+    <div id="prankPage"
+         class="card"
+         style="display:none;">
+
         <h1>🎉 Proceeding to bankrupt your account for using our service</h1>
-        <p>(I'm Not Joking 😆)</p>
+
+        <p>(I'm not joking 😆)</p>
 
         <div class="loader"></div>
 
         <p>Loading...</p>
+
     </div>
 
 </div>
@@ -111,20 +144,44 @@ button:hover{
 <script>
 function speak(text){
     let msg = new SpeechSynthesisUtterance(text);
+    msg.rate = 1;
+    msg.pitch = 1;
+    msg.volume = 1;
     speechSynthesis.speak(msg);
 }
 
 function turnOnFlashlight(){
+
     speak("OK Google turn on the flashlight");
+
+    document.getElementById("onBtn").style.display = "none";
+    document.getElementById("offBtn").style.display = "block";
 }
 
 function showPrizePage(){
 
-    document.getElementById("mainPage").style.display="none";
-    document.getElementById("prankPage").style.display="block";
+    document.getElementById("mainPage").style.display = "none";
+    document.getElementById("prankPage").style.display = "block";
 
-    setTimeout(()=>{
+    setTimeout(function(){
+
         speak("OK Google turn off the flashlight");
+
+        setTimeout(function(){
+
+            document.getElementById("prankPage").innerHTML = `
+                <h1>Payment Success✅!</h1>
+                <p>
+                    You Loser, Dont Head Back Here.
+                </p>
+                <br>
+                <p>
+                    But your flashlight should be off now.
+                </p>
+            `;
+
+        },1000);
+
     },3000);
 }
 </script>
